@@ -95,7 +95,7 @@ def add_users_to_group():
 
     g_index = input("Enter a Number: ")
     target_group=groups[int(g_index)]
-    print('\n\nGrupo elegido:\t' + groups[int(g_index)].title)
+    print('\n\nGroup NO:\t' + groups[int(g_index)].title)
 
     target_group_entity1 = InputPeerChannel(target_group.id,target_group.access_hash)
     
@@ -170,9 +170,10 @@ def list_users_in_group():
  
     print(gr+'[+] Saving In file...')
     time.sleep(1)
-    with open("members.csv","w",encoding='UTF-8') as f:
+    with open("grp" + re.sub("-+","-",re.sub("[^a-zA-Z]","-",str.lower(target_group.title))) + ".csv","w",encoding='UTF-8') as f:
+    #with open("members.csv","w",encoding='UTF-8') as f:
         writer = csv.writer(f,delimiter=",",lineterminator="\n")
-        writer.writerow(['username','user id', 'access hash','name','group', 'group id'])
+        writer.writerow(['username','user id', 'access hash','name',])
         for user in all_participants:
             if user.username:
                 username= user.username
@@ -187,7 +188,8 @@ def list_users_in_group():
             else:
                 last_name= ""
             name= (first_name + ' ' + last_name).strip()
-            writer.writerow([username,user.id,user.access_hash,name,target_group.title, target_group.id])      
+            writer.writerow([username,user.id,user.access_hash,name])
+    main.banner()        
     print(gr+'[+] Members scraped successfully.')
 
 def printCSV():
