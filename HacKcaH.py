@@ -170,8 +170,7 @@ def list_users_in_group():
  
     print(gr+'[+] Saving In file...')
     time.sleep(1)
-    with open("members-" + re.sub("-+","-",re.sub("[^a-zA-Z]">
-    #with open("grp" + re.sub("-+","-",re.sub("[^a-zA-Z]","-",str.lower(target_group.title))) + ".csv","w",encoding='UTF-8') as f:
+    with open("grp" + re.sub("-+","-",re.sub("[^a-zA-Z]","-",str.lower(target_group.title))) + ".csv","w",encoding='UTF-8') as f:
     #with open("members.csv","w",encoding='UTF-8') as f:
         writer = csv.writer(f,delimiter=",",lineterminator="\n")
         writer.writerow(['username','user id', 'access hash','name',])
