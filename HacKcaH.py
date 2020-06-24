@@ -11,10 +11,24 @@ import random
 import re
 import os, sys
 import configparser
-
 re="\033[1;31m"
 gr="\033[1;32m"
 cy="\033[1;36m"
+
+class main():
+
+    def banner():
+        
+        print(gr+f"""                
+              TELEGRAM:@HacKcah_dm
+              https://t.me/HacKcah_dm
+              
+                  https://t.me/HacKcah        
+            telegram group for update " Shell "
+            """+gr)
+
+
+
 cpass = configparser.RawConfigParser()
 cpass.read('config.data')
 
@@ -26,21 +40,14 @@ try:
 
 except KeyError:
     os.system('clear')
-    banner()
+    main.banner()
     print(re+"[!] run python3 setup.py first !!\n")
     sys.exit(1)
 
 
 SLEEP_TIME = 30
 
-class main():
 
-    def banner():
-        
-        print(f"""                
-            TELEGRAM https://t.me/HacKcah
-            telegram group for update " Shell "
-            """)
 
 client.connect()
 if not client.is_user_authorized():
@@ -65,7 +72,7 @@ def add_users_to_group():
                 print ('users without id or access_hash')
             users.append(user)
 
-    #random.shuffle(users)
+    random.shuffle(users)
     chats = []
     last_date = None
     chunk_size = 10
@@ -102,6 +109,8 @@ def add_users_to_group():
     mode = int(input("Enter 1 to add by username or 2 to add by ID: "))
 
     error_count = 0
+    Flood_Error=0
+    m=0
 
     for user in users:
         try:
@@ -115,10 +124,15 @@ def add_users_to_group():
             else:
                 sys.exit("Invalid Mode Selected. Please Try Again.")
             client(InviteToChannelRequest(target_group_entity,[user_to_add]))
+            print("NO OF MEMBERS ADDED:",m)
+            m+=1
             print("Waiting 45 to 70 Seconds...")
             time.sleep(random.randrange(45, 70))
         except PeerFloodError:
-            print("Getting Flood Error from telegram. Script is stopping now. Please try again after some time.")
+             Flood_Error += 1
+             print("Getting Flood Error from telegram.")
+             if Flood_Error > 6:
+                 sys.exit('Getting Flood Error from telegram. Script is stopping now. Please try again after 1 day time.')
         except UserPrivacyRestrictedError:
             print("The user's privacy settings do not allow you to do this. Skipping.")
         except:
@@ -129,6 +143,7 @@ def add_users_to_group():
                 sys.exit('too many errors')
             continue
 
+
 def list_users_in_group():
     os.system('clear')
     main.banner()
@@ -136,49 +151,48 @@ def list_users_in_group():
     last_date = None
     chunk_size = 200
     groups=[]
- 
+    
     result = client(GetDialogsRequest(
-             offset_date=last_date,
-             offset_id=0,
-             offset_peer=InputPeerEmpty(),
-             limit=chunk_size,
-             hash = 0
-         ))
+                offset_date=last_date,
+                offset_id=0,
+                offset_peer=InputPeerEmpty(),
+                limit=chunk_size,
+                hash = 0
+            ))
     chats.extend(result.chats)
- 
+    
     for chat in chats:
-        try:
+        try:           
             if chat.megagroup== True:
-                groups.append(chat)
+                 groups.append(chat)
         except:
             continue
-     
-    print('[+] Choose a group to scrape members :')
+    
+    print('Choose a group to scrape members from:')
     i=0
     for g in groups:
-        print(gr+'['+cy+str(i)+gr+']'+cy+' - '+ g.title)
+        print(str(i) + '- ' + g.title)
         i+=1
- 
-    print('')
-    g_index = input(gr+"[+] Enter a Number : "+re)
+    
+    g_index = input("Enter a Number: ")
     target_group=groups[int(g_index)]
-     
-    print(gr+'[+] Fetching Members...')
-    time.sleep(1)
+
+    print('\n\nGroup :\t' + groups[int(g_index)].title)
+    
+    print('Fetching Members...')
     all_participants = []
     all_participants = client.get_participants(target_group, aggressive=True)
- 
-    print(gr+'[+] Saving In file...')
-    time.sleep(1)
-    with open("grp" + re.sub("-+","-",re.sub("[^a-zA-Z]","-",str.lower(target_group.title))) + ".csv","w",encoding='UTF-8') as f:
-    #with open("members.csv","w",encoding='UTF-8') as f:
+    
+    print('Saving In file...')
+    with open("members.csv","w",encoding='UTF-8') as f :
         writer = csv.writer(f,delimiter=",",lineterminator="\n")
-        writer.writerow(['username','user id', 'access hash','name',])
+        writer.writerow(['username','user id', 'access hash','name','group', 'group id'])
         for user in all_participants:
             if user.username:
                 username= user.username
             else:
-                username= ""
+                continue
+                
             if user.first_name:
                 first_name= user.first_name
             else:
@@ -188,9 +202,12 @@ def list_users_in_group():
             else:
                 last_name= ""
             name= (first_name + ' ' + last_name).strip()
-            writer.writerow([username,user.id,user.access_hash,name])
-    main.banner()        
-    print(gr+'[+] Members scraped successfully.')
+            writer.writerow([username])      
+    print('Members scraped successfully.')
+
+
+
+    
 
 def printCSV():
     os.system('clear')
