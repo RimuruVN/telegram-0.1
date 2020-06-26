@@ -104,7 +104,7 @@ def add_users_to_group():
     target_group=groups[int(g_index)]
     print('\n\nGroup NO:\t' + groups[int(g_index)].title)
 
-    target_group_entity1 = InputPeerChannel(target_group.id,target_group.access_hash)
+    target_group_entity = InputPeerChannel(target_group.id,target_group.access_hash)
     
     mode = int(input("Enter 1 to add by username or 2 to add by ID: "))
 
@@ -279,8 +279,7 @@ def send_sms():
 
 
 
-
-# print('Fetching Members...')
+print('Fetching Members...')
 # all_participants = []
 # all_participants = client.get_participants(target_group, aggressive=True)
 print('What do you want to do:')
