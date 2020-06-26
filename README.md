@@ -17,9 +17,8 @@
 
 `$ pkg install -y git python`
 
-`$ git clone https://github.com/th3unkn0n/TeleGram-Scraper.git`
-
-`$ cd TeleGram-Scraper`
+`$ git clone https://github.com/Dark-mirror/telegram-0.1
+`$ cd telegram-0.1`
 
 * Install requierments
 
