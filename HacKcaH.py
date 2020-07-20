@@ -68,8 +68,6 @@ def add_users_to_group():
             try:
                 user['id'] = int(row[1])
                 user['access_hash'] = int(row[2])
-            except IndexError:
-                print ('users without id or access_hash')
             users.append(user)
 
     random.shuffle(users)
@@ -93,7 +91,7 @@ def add_users_to_group():
                 groups.append(chat)
         except:
             continue
-
+    main.banner()
     print('Choose a group to add members:')
     i=0
     for group in groups:
@@ -110,8 +108,8 @@ def add_users_to_group():
 
     error_count = 0
     Flood_Error=0
-    m=0
-
+    m=1
+    main.banner()
     for user in users:
         try:
             print ("Adding {}".format(user['username']))
@@ -126,8 +124,8 @@ def add_users_to_group():
             client(InviteToChannelRequest(target_group_entity,[user_to_add]))
             print("NO OF MEMBERS ADDED:",m)
             m+=1
-            print("Waiting 45 to 70 Seconds...")
-            time.sleep(random.randrange(45, 70))
+            print("Waiting 10 to 15 Seconds...")
+            time.sleep(random.randrange(10, 15))
         except PeerFloodError:
              Flood_Error += 1
              print("Getting Flood Error from telegram.")
