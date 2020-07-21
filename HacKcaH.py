@@ -68,6 +68,8 @@ def add_users_to_group():
             try:
                 user['id'] = int(row[1])
                 user['access_hash'] = int(row[2])
+            except:
+                ahssj=0
             users.append(user)
 
     random.shuffle(users)
