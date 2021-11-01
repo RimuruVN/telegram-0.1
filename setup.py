@@ -16,8 +16,7 @@ import time
 def banner():
                 os.system('clear')
                 print(f"""                
-            TELEGRAM https://t.me/HacKcah
-            telegram group for update " Shell "
+            TELEGRAM
       """)
 
 def requirements():
