@@ -20,11 +20,7 @@ class main():
     def banner():
         
         print(gr+f"""                
-              TELEGRAM:@HacKcah_dm
-              https://t.me/HacKcah_dm
-              
-                  https://t.me/HacKcah        
-            telegram group for update " Shell "
+              KÉO MEMBER VÀO NHÓM TELEGRAM
             """+gr)
 
 
@@ -52,7 +48,7 @@ SLEEP_TIME = 30
 client.connect()
 if not client.is_user_authorized():
     client.send_code_request(phone)
-    client.sign_in(phone, input('Enter the code: '))
+    client.sign_in(phone, input('Nhập code: '))
 
 def add_users_to_group():
     os.system('clear')
@@ -94,19 +90,19 @@ def add_users_to_group():
         except:
             continue
     main.banner()
-    print('Choose a group to add members:')
+    print('Chọn nhóm thêm member:')
     i=0
     for group in groups:
         print(str(i) + '- ' + group.title)
         i+=1
 
-    g_index = input("Enter a Number: ")
+    g_index = input("Nhập lựa chọn: ")
     target_group=groups[int(g_index)]
-    print('\n\nGroup NO:\t' + groups[int(g_index)].title)
+    print('\n\nGroup tăng member:\t' + groups[int(g_index)].title)
 
     target_group_entity = InputPeerChannel(target_group.id,target_group.access_hash)
     
-    mode = int(input("Enter 1 to add by username or 2 to add by ID: "))
+    mode = int(input("Nhập 1 để thêm theo tên người dùng hoặc 2 để thêm theo ID: "))
 
     error_count = 0
     Flood_Error=0
@@ -114,7 +110,7 @@ def add_users_to_group():
     main.banner()
     for user in users:
         try:
-            print ("Adding {}".format(user['username']))
+            print ("Thêm {}".format(user['username']))
             if mode == 1:
                 if user['username'] == "":
                     continue
@@ -122,19 +118,19 @@ def add_users_to_group():
             elif mode == 2:
                 user_to_add = InputPeerUser(user['id'], user['access_hash'])
             else:
-                sys.exit("Invalid Mode Selected. Please Try Again.")
+                sys.exit("Đã chọn chế độ không hợp lệ. Vui lòng thử lại.")
             client(InviteToChannelRequest(target_group_entity,[user_to_add]))
-            print("NO OF MEMBERS ADDED:",m)
+            print("Số thành viên đã thêm:",m)
             m+=1
-            print("Waiting 10 to 15 Seconds...")
+            print("Chờ 10 đến 15 giây...")
             time.sleep(random.randrange(10, 15))
         except PeerFloodError:
              Flood_Error += 1
-             print("Getting Flood Error from telegram.")
+             print("Nhận lỗi lũ lụt từ điện tín.")
              if Flood_Error > 6:
-                 sys.exit('Getting Flood Error from telegram. Script is stopping now. Please try again after 1 day time.')
+                 sys.exit('Nhận lỗi lũ lụt từ điện tín. Tập lệnh hiện đang dừng. Vui lòng thử lại sau 1 ngày.')
         except UserPrivacyRestrictedError:
-            print("The user's privacy settings do not allow you to do this. Skipping.")
+            print("Cài đặt quyền riêng tư của người dùng không cho phép bạn làm điều này. Bỏ qua.")
         except:
             traceback.print_exc()
             print("Unexpected Error")
@@ -168,22 +164,22 @@ def list_users_in_group():
         except:
             continue
     
-    print('Choose a group to scrape members from:')
+    print('Chọn một nhóm để loại bỏ các thành viên:')
     i=0
     for g in groups:
         print(str(i) + '- ' + g.title)
         i+=1
     
-    g_index = input("Enter a Number: ")
+    g_index = input("Nhập lựa chọn: ")
     target_group=groups[int(g_index)]
 
     print('\n\nGroup :\t' + groups[int(g_index)].title)
     
-    print('Fetching Members...')
+    print('Tìm nạp thành viên...')
     all_participants = []
     all_participants = client.get_participants(target_group, aggressive=True)
     
-    print('Saving In file...')
+    print('Đang lưu trong tệp...')
     with open("members.csv","w",encoding='UTF-8') as f :
         writer = csv.writer(f,delimiter=",",lineterminator="\n")
         writer.writerow(['username','user id', 'access hash','name','group', 'group id'])
@@ -203,7 +199,7 @@ def list_users_in_group():
                 last_name= ""
             name= (first_name + ' ' + last_name).strip()
             writer.writerow([username])      
-    print('Members scraped successfully.')
+    print('Thành viên đã được loại bỏ thành công.')
 
 
 
@@ -244,10 +240,10 @@ def send_sms():
                 user['access_hash'] = int(row[2])
                 user['name'] = row[3]
                 users.append(user)
-        print(gr+"[1] send sms by user ID\n[2] send sms by username ")
+        print(gr+"[1] gửi sms bằng ID người dùng\n[2] gửi sms bằng tên người dùng")
         mode = int(input(gr+"Input : "+re))
          
-        message = input(gr+"[+] Enter Your Message : "+re)
+        message = input(gr+"[+] Nhập tin nhắn của bạn : "+re)
         for user in users:
             if mode == 2:
                 if user['username'] == "":
@@ -256,34 +252,34 @@ def send_sms():
             elif mode == 1:
                 receiver = InputPeerUser(user['id'],user['access_hash'])
             else:
-                print(re+"[!] Invalid Mode. Exiting.")
+                print(re+"[!] Chế độ không hợp lệ. Đang thoát.")
                 client.disconnect()
                 sys.exit()
             try:
-                print(gr+"[+] Sending Message to:", user['name'])
+                print(gr+"[+] Gửi tin nhắn tới:", user['name'])
                 client.send_message(receiver, message.format(user['name']))
-                print( "Waiting 40 seconds")
+                print( "Chờ 40 giây")
                 time.sleep(random.randrange(30, 45))
 #                time.sleep(SLEEP_TIME)
             except PeerFloodError:
-                print(re+"[!] Getting Flood Error from telegram. \n[!] Script is stopping now. \n[!] Please try again after some time.")
+                print(re+"[!] Nhận lỗi lũ lụt từ điện tín. \n[!] Tập lệnh hiện đang dừng. \n[!] Vui lòng thử lại sau một thời gian.")
                 client.disconnect()
                 sys.exit()
             except Exception as e:
                 print(re+"[!] Error:", e)
-                print(re+"[!] Trying to continue...")
+                print(re+"[!] Đang cố gắng tiếp tục...")
                 continue
         client.disconnect()
-        print("Done. Message sent to all users.")
+        print("Xong. Đã gửi tin nhắn cho tất cả người dùng.")
 
 
 
 
-print('Fetching Members...')
+print('Tìm nạp thành viên ...')
 # all_participants = []
 # all_participants = client.get_participants(target_group, aggressive=True)
-print('What do you want to do:')
-mode = int(input("Enter \n1-List users in a group\n2-Add users from CSV to Group (CSV must be passed as a parameter to the script\n3-Show CSV\n4-SmS script\n\nYour option:  "))
+print('Bạn muốn làm gì:')
+mode = int(input("Enter \n1-Liệt kê người dùng trong một nhóm \n2-Thêm người dùng từ CSV vào Nhóm (CSV phải được chuyển làm tham số cho tập lệnh\n3-Show CSV\n4-Gửi tin nhắn hàng loạt\n\nTùy chọn của bạn: "))
 
 if mode == 1:
     list_users_in_group()
